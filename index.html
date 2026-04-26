@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoSapiens Project Dashboard</title>
+    <title>Multi-Agent Auto Research Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>body { padding-top: 2rem; background-color: #f8f9fa;} .idea-card { margin-bottom: 2rem; }</style>
 </head>
 <body>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">AutoSapiens Dashboard</h1>
-            <a href="https://github.com/yanghangAI/autosapiens" target="_blank" class="btn btn-outline-dark">View on GitHub</a>
+            <h1 class="mb-0">Multi-Agent Auto Research</h1>
+            <a href="https://github.com/yanghangAI/autohide" target="_blank" class="btn btn-outline-dark">View on GitHub</a>
+
         </div>
-        
+
         <h2 class="mt-5">Results Overview</h2>
         <div class="table-responsive">
             <table class="table table-striped table-hover mt-3 shadow-sm rounded" id="resultsTable">
@@ -21,109 +22,131 @@
                     <tr>
                         <th onclick="sortTable(0)" style="cursor: pointer;" title="Click to sort">Idea ID ↕</th>
                         <th onclick="sortTable(1)" style="cursor: pointer;" title="Click to sort">Design ID ↕</th>
-                        <th onclick="sortTable(2)" style="cursor: pointer;" title="Click to sort">Epoch ↕</th>
-                        <th onclick="sortTable(3)" style="cursor: pointer;" title="Click to sort">Train MPJPE ↕</th>
-                        <th onclick="sortTable(4)" style="cursor: pointer;" title="Click to sort">Val MPJPE ↕</th>
+                        <th onclick="sortTable(2)" style="cursor: pointer;" title="Click to sort">Step ↕</th>
+                        <th onclick="sortTable(3)" style="cursor: pointer;" title="Click to sort">step ↕</th>
+                        <th onclick="sortTable(4)" style="cursor: pointer;" title="Click to sort">score ↕</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class='table-secondary'>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/idea.md" target="_blank">idea001</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/design001/design.md" target="_blank">design001</a> <span class="badge bg-secondary">Baseline</span></td>
-                        <td>20</td>
-                        <td>87.98</td>
-                        <td>142.48</td>
+                    <tr>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/baseline/idea.md" target="_blank">baseline</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/baseline/baseline/design.md" target="_blank">baseline</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.27</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/idea.md" target="_blank">idea001</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/design002/design.md" target="_blank">design002</a></td>
-                        <td>20</td>
-                        <td>86.93</td>
-                        <td>139.59</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/idea.md" target="_blank">idea001</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/design001/design.md" target="_blank">design001</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>2.72</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/idea.md" target="_blank">idea001</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/design003/design.md" target="_blank">design003</a></td>
-                        <td>20</td>
-                        <td>81.93</td>
-                        <td>142.76</td>
-                    </tr>
-                    <tr class='table-secondary'>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/idea.md" target="_blank">idea002</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/design001/design.md" target="_blank">design001</a> <span class="badge bg-secondary">Baseline</span></td>
-                        <td>20</td>
-                        <td>87.98</td>
-                        <td>142.48</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/idea.md" target="_blank">idea001</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/design002/design.md" target="_blank">design002</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>16.36</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/idea.md" target="_blank">idea002</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/design002/design.md" target="_blank">design002</a></td>
-                        <td>20</td>
-                        <td>92.82</td>
-                        <td>144.52</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/idea.md" target="_blank">idea001</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/design003/design.md" target="_blank">design003</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.73</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/idea.md" target="_blank">idea002</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/design003/design.md" target="_blank">design003</a></td>
-                        <td>20</td>
-                        <td>92.11</td>
-                        <td>139.50</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/idea.md" target="_blank">idea002</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/design001/design.md" target="_blank">design001</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.44</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea003/idea.md" target="_blank">idea003</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea003/design001/design.md" target="_blank">design001</a></td>
-                        <td>20</td>
-                        <td>122.45</td>
-                        <td>162.95</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/idea.md" target="_blank">idea002</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/design002/design.md" target="_blank">design002</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.47</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea003/idea.md" target="_blank">idea003</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea003/design002/design.md" target="_blank">design002</a></td>
-                        <td>20</td>
-                        <td>88.71</td>
-                        <td>143.23</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/idea.md" target="_blank">idea002</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/design003/design.md" target="_blank">design003</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>-0.01</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/design001/design.md" target="_blank">design001</a></td>
-                        <td>20</td>
-                        <td>68.00</td>
-                        <td>131.94</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/idea.md" target="_blank">idea003</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/design001/design.md" target="_blank">design001</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.85</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/design002/design.md" target="_blank">design002</a></td>
-                        <td>20</td>
-                        <td>70.42</td>
-                        <td>130.72</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/idea.md" target="_blank">idea003</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/design002/design.md" target="_blank">design002</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.55</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/design003/design.md" target="_blank">design003</a></td>
-                        <td>20</td>
-                        <td>73.37</td>
-                        <td>131.66</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/idea.md" target="_blank">idea003</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/design003/design.md" target="_blank">design003</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>28.16</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/design004/design.md" target="_blank">design004</a></td>
-                        <td>20</td>
-                        <td>70.54</td>
-                        <td>132.28</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/design001/design.md" target="_blank">design001</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.34</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/design005/design.md" target="_blank">design005</a></td>
-                        <td>20</td>
-                        <td>72.36</td>
-                        <td>131.56</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/design002/design.md" target="_blank">design002</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>-0.01</td>
                     </tr>
                     <tr>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
-                        <td><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/design006/design.md" target="_blank">design006</a></td>
-                        <td>20</td>
-                        <td>74.87</td>
-                        <td>131.90</td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/idea.md" target="_blank">idea004</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/design003/design.md" target="_blank">design003</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>-0.01</td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/idea.md" target="_blank">idea005</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/design001/design.md" target="_blank">design001</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>29.57</td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/idea.md" target="_blank">idea005</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/design002/design.md" target="_blank">design002</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>27.06</td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/idea.md" target="_blank">idea005</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/design003/design.md" target="_blank">design003</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>25.56</td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/idea.md" target="_blank">idea005</a></td>
+                        <td><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/design004/design.md" target="_blank">design004</a></td>
+                        <td>30000</td>
+                        <td>30000.00</td>
+                        <td>25.63</td>
                     </tr>
                 </tbody>
             </table>
@@ -135,15 +158,12 @@
             <div class="col-md-6 idea-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea001/idea.md" target="_blank" style="text-decoration: none;">idea001: RGB-D Modality Fusion Strategy</a></h5>
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea001/idea.md" target="_blank" style="text-decoration: none;">idea001: Perceptual image-loss rebalancing for headroom-driven PSNR gains</a></h5>
                         <h6 class="card-subtitle mb-2 text-muted">Status: Done</h6>
-                        <div class="card-text small"><pre style="white-space: pre-wrap;"># RGB-D Modality Fusion Strategy
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Perceptual image-loss rebalancing for headroom-driven PSNR gains
 
-**Expected Designs:** 3
-
-**Concept:** 
-The Sapiens baseline uses 'early fusion' by modifying the first patch embedding layer for 4-channel input. This potentially dis...</pre></div>
-                        <a href="https://github.com/yanghangAI/autosapiens/tree/main/runs/idea001" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+**Approach:** Replace the baseline&#x27;s pure-L1 host-reconstruction loss with the already-implemented `ImageSecretLoss` (Y...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea001" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
                     </div>
                 </div>
             </div>
@@ -151,15 +171,12 @@ The Sapiens baseline uses 'early fusion' by modifying the first patch embedding 
             <div class="col-md-6 idea-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea002/idea.md" target="_blank" style="text-decoration: none;">idea002: Kinematic Attention Masking</a></h5>
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea002/idea.md" target="_blank" style="text-decoration: none;">idea002: Worst-case-aware attack curriculum to lift the bit_acc tail</a></h5>
                         <h6 class="card-subtitle mb-2 text-muted">Status: Done</h6>
-                        <div class="card-text small"><pre style="white-space: pre-wrap;"># Kinematic Attention Masking
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Worst-case-aware attack curriculum to lift the bit_acc tail
 
-**Expected Designs:** 3
-
-**Concept:** 
-Human pose estimation models often predict physically impossible poses because the attention mechanism lacks explicit structural c...</pre></div>
-                        <a href="https://github.com/yanghangAI/autosapiens/tree/main/runs/idea002" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+**Approach:** Restructure the training-time `NoiseCurriculum` / `AttackLayer` interaction in `baseline/exp0_inn_train.py` so...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea002" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
                     </div>
                 </div>
             </div>
@@ -167,15 +184,12 @@ Human pose estimation models often predict physically impossible poses because t
             <div class="col-md-6 idea-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea003/idea.md" target="_blank" style="text-decoration: none;">idea003: Curriculum-Based Loss Weighting</a></h5>
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea003/idea.md" target="_blank" style="text-decoration: none;">idea003: Spatial JND masking of host-reconstruction loss for content-adaptive embedding</a></h5>
                         <h6 class="card-subtitle mb-2 text-muted">Status: Done</h6>
-                        <div class="card-text small"><pre style="white-space: pre-wrap;"># Curriculum-Based Loss Weighting
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Spatial JND masking of host-reconstruction loss for content-adaptive embedding
 
-**Expected Designs:** 2
-
-**Concept:** 
-Absolute depth is hard and creates noisy gradients early on. It needs a learned or structured loss weighting over epochs to st...</pre></div>
-                        <a href="https://github.com/yanghangAI/autosapiens/tree/main/runs/idea003" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+**Approach:** Reweight the per-pixel host-reconstruction residual by a content-adaptive Just-Noticeable-D...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea003" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
                     </div>
                 </div>
             </div>
@@ -183,15 +197,12 @@ Absolute depth is hard and creates noisy gradients early on. It needs a learned 
             <div class="col-md-6 idea-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea004/idea.md" target="_blank" style="text-decoration: none;">idea004: Layer-Wise Learning Rate Decay & Progressive Unfreezing</a></h5>
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea004/idea.md" target="_blank" style="text-decoration: none;">idea004: Optimization-dynamics improvements: EMA shadow weights + straight-through container clipping</a></h5>
                         <h6 class="card-subtitle mb-2 text-muted">Status: Done</h6>
-                        <div class="card-text small"><pre style="white-space: pre-wrap;"># Layer-Wise Learning Rate Decay & Progressive Unfreezing
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Optimization-dynamics improvements: EMA shadow weights + straight-through container clipping
 
-**Expected Designs:** 6
-
-**Concept:** 
-Use structure in how the backbone learns to prevent catastrophic forgetting of the ViT's rich pre-trai...</pre></div>
-                        <a href="https://github.com/yanghangAI/autosapiens/tree/main/runs/idea004" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+**Approach:** Improve the training-time optimization dynamics of the existing baseline pipe...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea004" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
                     </div>
                 </div>
             </div>
@@ -199,26 +210,52 @@ Use structure in how the backbone learns to prevent catastrophic forgetting of t
             <div class="col-md-6 idea-card">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autosapiens/blob/main/runs/idea005/idea.md" target="_blank" style="text-decoration: none;">idea005: Depth-Aware Positional Embeddings</a></h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Status: Designed</h6>
-                        <div class="card-text small"><pre style="white-space: pre-wrap;"># Depth-Aware Positional Embeddings
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea005/idea.md" target="_blank" style="text-decoration: none;">idea005: Diffuse bit-carrier basis to eliminate visible 32×32 patch grid in container images</a></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Status: Done</h6>
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Diffuse bit-carrier basis to eliminate visible 32×32 patch grid in container images
 
-**Expected Designs:** 3
+**Approach:** Replace the `PatchBitAdapter`&#x27;s nearest-neighbor patch tile (which tiles each bit as a...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea005" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+                    </div>
+                </div>
+            </div>
 
-**Concept:** 
-Provide explicit geometric awareness to the Transformer, which currently only uses standard 2D positional encodings. Inject ...</pre></div>
-                        <a href="https://github.com/yanghangAI/autosapiens/tree/main/runs/idea005" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+            <div class="col-md-6 idea-card">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea006/idea.md" target="_blank" style="text-decoration: none;">idea006: Stack EMA shadow weights onto the JND-masked YUV+L1 loss to compose orthogonal interventions</a></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Status: Implemented</h6>
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Stack EMA shadow weights onto the JND-masked YUV+L1 loss to compose orthogonal interventions
+
+**Approach:** Take the current best `Done` configuration (`runs/idea003/design003`: Sobel J...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea006" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 idea-card">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><a href="https://github.com/yanghangAI/autohide/blob/main/runs/idea007/idea.md" target="_blank" style="text-decoration: none;">idea007: Multi-scale and structure-aware spatial masking for content-adaptive embedding</a></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Status: Implemented</h6>
+                        <div class="card-text small"><pre style="white-space: pre-wrap;">**Idea Name:** Multi-scale and structure-aware spatial masking for content-adaptive embedding
+
+**Approach:** Deepen the proven Sobel-JND spatial-masking lever from `idea003/design003` by replacing the...</pre></div>
+                        <a href="https://github.com/yanghangAI/autohide/tree/main/runs/idea007" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View Full Idea & Designs</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <footer class="text-center text-muted py-4 mt-4 border-top">
+        <small>Powered by <a href="https://github.com/yanghangAI/MultiAgentAutoResearch" target="_blank">Multi-Agent Auto Research</a></small>
+    </footer>
     <script>
     function sortTable(n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
       table = document.getElementById("resultsTable");
       switching = true;
-      dir = "asc"; 
+      dir = "asc";
       while (switching) {
         switching = false;
         rows = table.rows;
@@ -239,12 +276,10 @@ Provide explicit geometric awareness to the Transformer, which currently only us
         if (shouldSwitch) {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
-          switchcount ++;      
-        } else {
-          if (switchcount == 0 && dir == "asc") {
-            dir = "desc";
-            switching = true;
-          }
+          switchcount ++;
+        } else if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
         }
       }
     }
