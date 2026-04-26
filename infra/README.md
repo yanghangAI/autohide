@@ -1,13 +1,10 @@
-# Infra Folder
+# Infra
 
-Use this folder for project code that should remain stable across experiment designs.
+## Contents
 
-Typical contents:
-- dataset/data access utilities
-- metrics and evaluation helpers
-- logging/checkpoint helpers
-- shared constants and reusable utilities
-
-Contract:
-- Treat files here as shared infrastructure.
-- Change only when the user ask you to and double check with the user.
+- `attacks.py`
+- `dataset.py`
+- `exp0_eval.py`
+- `exp0_inn_eval.py`
+- `exp0_report.py`
+- `robust_hash.py`

@@ -1,0 +1,10 @@
+## design001
+**Verdict:** APPROVED
+**Feasibility evidence:**
+- Parent's `code/losses.py:48-67` defines `sobel_jnd_mask` with the same `rgb_to_yuv → luma → Sobel → magnitude → per-image normalize` pipeline; design001's `multiscale_sobel_jnd_mask` reuses `_SOBEL_X`/`_SOBEL_Y` (defined parent `losses.py:31-37`) and `rgb_to_yuv` (parent `losses.py:25`). All primitives exist.
+- Parent's `ImageSecretLoss.__init__` at `code/losses.py:96-116` already accepts `jnd_mode` with an assert (`losses.py:105`); extending the assert tuple to include `"sobel_multiscale"` and adding two kwargs (`jnd_sigmas`, `jnd_pct`) is a mechanical change.
+- The mask dispatch in `forward` at `code/losses.py:130-135` already branches on `jnd_mode`; adding a third elif using the new helper preserves the existing `w = 1/(1+β·M)` line at `losses.py:135` and the `(w * sq).mean()` / `(w * (stego - cover).abs()).mean()` lines at `losses.py:136,139` unchanged.
+- Parent's `code/exp0_inn_train.py:258-266` constructs `ImageSecretLoss(...)` with `jnd_mode="sobel"`; swapping to `"sobel_multiscale"` and adding the two kwargs is mechanically a 4-line edit. The parallel metrics emission site at `exp0_inn_train.py:453-455` exists and accepts new fields the same way.
+- `M_multi` is `(B,1,H,W)`, broadcasts the same way as the parent's `M`. No shape mismatch.
+**Idea contradiction check:** The idea's direction (1) prescribes σ ∈ {1.0, 2.0, 4.0}, β=4.0, per-image 99th-percentile normalize then per-pixel max-aggregate, mask reused for YUV and masked-L1. design001 matches each clause verbatim. Mask is computed under `@torch.no_grad` and `.detach()`-ed (idea constraint). Parent settings preserved (`secret_weight=20`, `pixel_w=0.5`, `jnd_beta=4`, `lpips_w=0`).
+**Strongest objection (ruled out):** Could the per-image 99th-percentile normalization produce `M > 1` outliers and push `w` close to 0 in too many pixels, collapsing the masked-L1 contribution? §7 explicitly addresses this — only ≤1% of pixels exceed 1, `w = 1/(1+β·M)` stays in `(0,1]` for `M ≥ 0`, and the constraint that the parent's `bit_acc_clean ≈ 0.9949` must not degrade further is flagged as a smoke-run check.

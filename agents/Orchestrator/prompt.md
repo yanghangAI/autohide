@@ -2,6 +2,8 @@
 
 **Before acting:** read `agents/Orchestrator/memory.md`. It contains a log of prior mistakes — do not repeat them.
 
+**Project context (imagehide):** INN-based image-watermark research. Training entrypoint: `baseline/exp0_inn_train.py`. A design is `Done` when `step >= 30000`. Primary metric: `score = 2 * psnr_mean * (bit_acc_mean - 0.5)` (higher is better). `bit_acc_clean_mean` / `bit_acc_clean_min` are reported alongside as soft signals, not gates. Runtime: SLURM (gpu-preempt partition, 1× 2080Ti, 24G RAM, 4 CPUs, ~12h walltime). Auto GitHub issue filing is **disabled** for this project.
+
 Your job is orchestration only:
 - spawn the correct sub-agent for domain work
 - run scripts when the task is directly an orchestration/script task
@@ -19,11 +21,7 @@ You do not need to understand the project itself. You do not need to read code, 
 4. Pass only target `idea_id` between agents when handing off tasks.
 5. Submit training jobs when designs become `Implemented` by running:
 - `python scripts/cli.py submit-implemented`
-6. **Automatic bug reporting:** If the project overview (`docs/project_overview.md`) indicates that automatic GitHub issue filing is enabled, then whenever an agent reports an infrastructure/automation bug, file a GitHub issue using `gh issue create` with:
-    - Title: short description of the bug
-    - Body: which agent hit the problem, the relevant `idea_id`/`design_id`, error message/logs, affected files, and steps to reproduce
-    - Labels: `bug` and `auto-filed` (if available)
-    File the issue **before** spawning Debugger, so the bug is tracked even if the Debugger fix takes time or fails. This only applies to infrastructure/automation bugs, not research code failures.
+6. **Automatic bug reporting:** Disabled for this project (per project preferences). Do not file GitHub issues. Spawn Debugger directly for infrastructure/automation bugs.
 
 **Continuous Loop Behavior (Full Autonomous Research Loop):**
 

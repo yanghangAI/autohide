@@ -1,0 +1,35 @@
+**Idea Name:** Stack EMA shadow weights onto the JND-masked YUV+L1 loss to compose orthogonal interventions
+
+**Approach:** Take the current best `Done` configuration (`runs/idea003/design003`: Sobel JND mask on YUV term + masked L1 RGB pixel term, β=4.0, pixel_w=0.5, on top of YUV+FFL) and stack the EMA shadow-weight intervention from `runs/idea004/design001` (decay=0.999, warmup at `stage_a_steps`) on top of it, testing the hypothesis that the loss-side spatial reweighting and the optimizer-side weight-averaging are orthogonal and additively beneficial.
+
+**Expected Designs:** 3
+
+**Suggested Parent:** runs/idea003/design003
+
+**Baseline Source:** runs/idea003/design003 (current best `Done` entry — score=28.16, PSNR=28.48, ssim=0.945, bit_acc=0.9943, bit_acc_clean_min=0.9949). EMA-only on baseline (`idea004/design001`) gave +0.07 score (27.34 vs 27.27); JND+L1-mask (`idea003/design003`) gave +0.89 score over baseline. The two interventions touch disjoint files (`losses.py` vs `exp0_inn_train.py`) and disjoint mechanisms (training-time spatial loss reshaping vs inference-time weight averaging) and have not yet been combined.
+
+**Relationship to prior work:** Extends `idea003` (which extends `idea001`'s YUV+FFL loss with spatial Sobel JND masking) by adding the EMA-shadow-weight optimization-dynamics intervention from `idea004/design001`. Composes axes that idea003 and idea004 each established independently; tests whether their gains stack. Distinct from `idea005` (which targets the bit-carrier basis from baseline). Explicitly avoids LPIPS (collapses bit pathway per `idea001/design001-002`), STE container clipping (untested with masked loss; conservative scope), and HEM bank reweighting (collapses training per `idea002/design003` and `idea004/design002-003`).
+
+**Motivation from the data:**
+- The two best non-baseline interventions to date are `idea003/design003` (loss axis, +0.89 score) and `idea004/design001` (optimizer/eval-weight axis, +0.07 score). They modify disjoint code surfaces and have non-overlapping mechanisms — a textbook composition opportunity.
+- `idea003/design003`'s gain came primarily from PSNR (+1.15 dB), with bit_acc dipping slightly (0.9988 → 0.9943) and `bit_acc_clean_min` dipping to 0.9949 — i.e. it is operating closer to the bit-pathway edge than baseline. EMA's typical effect (smoother weights at eval time) is a *stabilizer* against late-training oscillations: this is exactly the regime where EMA tends to recover small amounts of both PSNR and bit_acc simultaneously.
+- `idea004/design001`'s small +0.07 gain on baseline was bounded by baseline already being a "well-behaved" optimum — there is little oscillation for EMA to smooth. The JND+L1-masked configuration has *more* late-training oscillation (the masked L1 term in particular adds a non-smooth signal to `l_quality`), so EMA's expected marginal gain on top of `idea003/design003` is plausibly higher than its marginal gain on baseline, not lower.
+- Other failed-to-help axes (LPIPS, STE-clip, HEM bank, severity annealing) are explicitly out of scope; this idea sticks strictly to the two interventions with positive, `Done`-confirmed deltas.
+
+**Suggested design directions (Designer to refine):**
+
+1. **EMA-only stack (pure composition).** Take `idea003/design003` end-to-end (Sobel JND mask, β=4.0, pixel_w=0.5, jnd_mode="sobel", `--num_blocks 16`, `--subnet_type rdb`, `--lr 2e-4`, `--img_weight 1.0`, `--bit_weight 20.0`, `--stage_a_steps 5000`, `--stage_b_steps 10000`) and add the `WeightEMA` shadow-weight machinery from `idea004/design001` verbatim (decay=0.999, EMA_WARMUP_STEPS = `stage_a_steps`, write EMA weights into `ckpt["model"]` for eval, dual-slot `model_online` for resume). No other change. Isolates the additive-stacking effect.
+
+2. **EMA + slightly more aggressive optimization (does EMA buy headroom?).** Same as d001 but probe whether EMA's smoothing permits a more aggressive optimizer setting that would otherwise destabilize the run — e.g. raise `--lr` modestly (e.g. 3e-4 vs the 2e-4 of the parent) **or** lengthen `--stage_b_steps` to give the bit pathway more attack-conditioning time before the long ramp tail, while keeping the locked flags untouched. Designer to pick exactly one of {lr↑, stage_b_steps↑} and justify; goal is to test whether EMA tolerates a perturbation that the un-EMA'd parent would not.
+
+3. **EMA + per-axis loss perturbation (does EMA buy headroom on the spatial axis?).** Same as d001 but probe one of the JND/L1 axes that `idea003` left unsearched in its winning config: either raise `pixel_w` modestly (e.g. 0.5 → 0.75) to push more of `l_quality` onto the masked spatial L1 term, **or** raise `jnd_beta` modestly (e.g. 4 → 6) to deepen the textured-region down-weighting. Designer to pick exactly one of {pixel_w↑, jnd_beta↑} and justify. Tests whether the additional weight-averaging headroom permits a stronger spatial reweighting than the un-EMA'd parent could safely sustain.
+
+**Constraints:**
+- Parent is `runs/idea003/design003` (Done, score=28.16). Designs build on its `code/baseline/losses.py` and `code/baseline/exp0_inn_train.py` directly. Designs may modify `baseline/exp0_inn_train.py`, `baseline/inn_model.py`, `baseline/losses.py` (and per-design `code/baseline/` mirrors); must NOT modify any `infra/` file.
+- Locked hyperparameters unchanged: `--batch_size 16`, `--secret_len 896`, `--resolution 256`, `--max_steps 30000`, `--total_steps 30000`. EMA decay (0.999) and EMA warmup (= `stage_a_steps`) are hard-coded constants (not new CLI flags), matching `idea004/design001`'s convention.
+- Hard condition `bit_acc_clean = 1.000` at every eval resolution must hold for the **EMA** weights at end of training. The post-clean-phase EMA warmup is the structural mitigation: by step `stage_a_steps=5000` the online model has already learned the clean pathway and EMA inherits it. `idea003/design003`'s `bit_acc_clean_min=0.9949` (slightly below 1.0) is an existing-parent weak spot; Designer should explicitly check whether EMA recovers it and flag if it degrades further.
+- LPIPS off (`lpips_w=0.0`); STE container clipping NOT applied (out of scope per user); HEM bank / severity annealing NOT applied (collapse risk per prior failures).
+- The `WeightEMA` class spec, dual-slot `model` / `model_online` checkpoint format, and `ema_active` per-step diagnostic field follow `idea004/design001` §4 verbatim. Designer should reuse the spec rather than redesign it.
+- `bit_weight=20.0` and `secret_weight=20.0` preserved (bit pathway protection); `num_blocks=16`, `subnet_type=rdb` preserved from the parent; mask is `torch.no_grad()` and detached; Sobel-JND helper computed once per `forward` and reused across YUV and L1 terms.
+- Walltime: EMA adds <1 ms/step on ~1.5M params; JND/L1 mask cost is unchanged from the parent. All three designs fit comfortably in the 12 h SLURM budget.
+- For d002 / d003: Designer must select exactly one perturbation axis per design and not stack lr↑ with pixel_w↑ etc. — this preserves the diagnostic value of the comparison against d001.

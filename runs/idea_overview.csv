@@ -1,1 +1,8 @@
-Idea_ID,Idea_Name,Status
+Idea_ID,Idea_Name,Status,created_at,updated_at
+idea001,Perceptual image-loss rebalancing for headroom-driven PSNR gains,Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+idea002,Worst-case-aware attack curriculum to lift the bit_acc tail,Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+idea003,Spatial JND masking of host-reconstruction loss for content-adaptive embedding,Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+idea004,Optimization-dynamics improvements: EMA shadow weights + straight-through container clipping,Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+idea005,Diffuse bit-carrier basis to eliminate visible 32×32 patch grid in container images,Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+idea006,Stack EMA shadow weights onto the JND-masked YUV+L1 loss to compose orthogonal interventions,Implemented,2026-04-26T22:16:06,2026-04-26T22:16:06
+idea007,Multi-scale and structure-aware spatial masking for content-adaptive embedding,Implemented,2026-04-26T22:16:06,2026-04-26T22:16:06

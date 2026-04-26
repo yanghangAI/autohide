@@ -1,0 +1,57 @@
+**Files changed:**
+code/exp0_inn_train.py
+
+**Changes:**
+- `code/exp0_inn_train.py`: Imported `ImageSecretLoss` from `losses`, instantiated it after `INNCodec` construction with the LPIPS-dominant config (`yuv_w=0.5, lpips_w=3.0, ffl_w=0.5, secret_weight=args.bit_weight`), replaced the inline L1 + BCE block with a single `img_loss_mod(...)` call wrapped in `autocast(enabled=False)` for fp32 stability of LPIPS/YUV/FFL, and extended the per-step `metrics.jsonl` record with `l_yuv`, `l_lpips`, `l_ffl`, `l_quality`, and `quality_alpha`.
+
+In `code/exp0_inn_train.py`, the new import:
+
+```python
+from inn_model import INNCodec  # noqa: E402  (sibling, baseline-owned)
+from losses import ImageSecretLoss  # noqa: E402  (sibling, baseline-owned)
+```
+
+In `code/exp0_inn_train.py`, the loss-module instantiation right after the `INNCodec` construction:
+
+```python
+    # LPIPS-dominant perceptual host loss: lpips_w=3.0, yuv_w=0.5, ffl_w=0.5.
+    # `--bit_weight` is repurposed as `secret_weight`; `--img_weight` becomes
+    # the multiplier on `l_quality` via `quality_alpha = img_weight * attack_alpha`.
+    img_loss_mod = ImageSecretLoss(
+        secret_weight=args.bit_weight,   # 20.0
+        yuv_w=0.5,
+        lpips_w=3.0,
+        ffl_w=0.5,
+    ).to(device)
+```
+
+In `code/exp0_inn_train.py`, the new train-step loss block replacing the L1+BCE inline:
+
+```python
+            # Quality alpha tied to attack curriculum: clean phase = 0
+            # (pure bit pressure), full = full quality term.
+            quality_alpha = args.img_weight * attack_alpha
+            container_fp32 = container.float()
+            cover_fp32 = cover.float()
+            logits_fp32 = logits.float()
+            with torch.amp.autocast("cuda", enabled=False):
+                loss, loss_logs = img_loss_mod(
+                    cover=cover_fp32,
+                    stego=container_fp32,
+                    secret=bits,
+                    logits=logits_fp32,
+                    alpha=quality_alpha,
+                )
+            bit_loss = loss_logs["l_bce"]
+            img_loss = loss_logs["l_quality"]   # backward-compatible logging
+```
+
+In `code/exp0_inn_train.py`, the extended logging record:
+
+```python
+                       l_yuv=loss_logs["l_yuv"].item(),
+                       l_lpips=loss_logs["l_lpips"].item(),
+                       l_ffl=loss_logs["l_ffl"].item(),
+                       l_quality=loss_logs["l_quality"].item(),
+                       quality_alpha=quality_alpha,
+```

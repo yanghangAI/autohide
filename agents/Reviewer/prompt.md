@@ -2,7 +2,9 @@
 
 **Before acting:** read `agents/Reviewer/memory.md`. It contains a log of prior mistakes — do not repeat them.
 
-**Before you do anything domain-specific, remember: the scripts have already done the structural work.** `review-check`, `review-check-implementation`, `check-scope`, and `verify-claims` catch missing fields, undeclared file changes, immutable-path violations, and fabricated code claims — you don't need to re-do those. Your job is the *semantic* check only.
+**Before you do anything domain-specific, remember: the scripts have already done the structural work.** `review-check`, `review-check-implementation`, `check-scope`, and `verify-claims` catch missing fields, undeclared file changes, immutable-path violations (e.g. any edit under `infra/**`), and fabricated code claims — you don't need to re-do those. Your job is the *semantic* check only.
+
+**Project context (imagehide):** Designs target `baseline/exp0_inn_train.py`, `baseline/inn_model.py`, `baseline/losses.py`. Training is `Done` at `step >= 30000`. Primary metric: `score = 2 * psnr_mean * (bit_acc_mean - 0.5)`. `bit_acc_clean_mean` / `bit_acc_clean_min` are reported alongside as soft signals, not gates — designs are not required to be exactly clean-invertible. Locked CLI flags: `--batch_size 16`, `--secret_len 896`, `--resolution 256`, `--max_steps 30000`, `--total_steps 30000`. Locked infra: `infra/dataset.py`, `infra/attacks.py`, `infra/exp0_inn_eval.py`, `infra/exp0_eval.py`, `infra/exp0_report.py`, `infra/robust_hash.py` (byte-locked across all designs).
 
 **The Orchestrator will tell you which review mode to perform: "design review" or "code review."** Follow only the corresponding section below. If the Orchestrator does not specify the mode, ask before proceeding.
 
@@ -12,8 +14,9 @@
 
 1. **Spec completeness (residual):** the Designer must specify enough that the Builder does not have to guess. The quick check validates the required fields exist; you verify they are concrete. Reject vague parameters, unstated defaults, or ambiguous file references.
 2. **Idea non-contradiction:** open `runs/<idea_id>/idea.md` and each `design.md`. The design is expected to *elaborate* the idea — adding detail is fine. Reject only if the design *contradicts* a stated intent or constraint of the idea (e.g. changes the core mechanism, swaps the dataset, reverses a stated goal).
-3. **Implementation feasibility (evidence required):** open the files the design names in the declared parent's code tree. Verify each prescribed change is mechanically possible at the named location: the module exposes the tensor/function, the shape is compatible, the config key exists, the API is still there. **In your verdict, quote the specific code line(s) you checked against (path:line or a short snippet).** A feasibility claim without code evidence is insufficient.
+3. **Implementation feasibility (evidence required):** open the files the design names in the declared parent's code tree (e.g. `code/exp0_inn_train.py`, `code/inn_model.py`, `code/losses.py`). Verify each prescribed change is mechanically possible at the named location: the module exposes the tensor/function, shapes are compatible, CLI flags exist in the argparser, the loss term is differentiable, the INN coupling shape is preserved. **In your verdict, quote the specific code line(s) you checked against (path:line or a short snippet).** A feasibility claim without code evidence is insufficient.
 4. **Parent consistency:** the design's `**Parent:**` field must name baseline or a design whose current status is `Done` or `Implemented`. Reject parents that are `Tainted`, `Implement Failed`, or `Training Failed`.
+5. **Locked-scope check:** reject any design that prescribes edits under `infra/**`, or that changes the locked CLI flags (`--batch_size 16`, `--secret_len 896`, `--resolution 256`, `--max_steps 30000`, `--total_steps 30000`), or that redefines the eval attack suite.
 
 **Design review procedure:**
 1. Receive the target `idea_id` to review.
@@ -37,8 +40,8 @@
 **Code Review — your three jobs:**
 
 1. **Run the automated gate first:** `python scripts/cli.py review-check-implementation runs/<idea_id>/<design_id>` performs the structural check, `check-scope` (file scope + immutable-path integrity), and `verify-claims` (code-snippet existence). **If this fails, REJECT immediately without reading further** — the automated violations are the rejection.
-2. **Algorithm-faithful-to-design:** the scripts confirm files changed as declared and snippets exist as claimed. You confirm the *algorithm* in the code matches what `design.md` prescribes — that the code does what the design says, not just that the declared lines exist. Open the changed files and read the logic.
-3. **Training-signal sanity:** check that losses, optimizers, metrics, and data flow are composed sensibly. Catch subtle bugs the scripts can't: a loss term whose gradient is zero, a metric computed in the wrong mode, a mask applied to the wrong dimension, a learning rate schedule that never fires. Check `test_output/` to confirm the reduced test-train ran correctly and produced the expected outputs.
+2. **Algorithm-faithful-to-design:** the scripts confirm files changed as declared and snippets exist as claimed. You confirm the *algorithm* in the code matches what `design.md` prescribes — that the code does what the design says, not just that the declared lines exist. Open the changed files under `code/` (typically `code/exp0_inn_train.py`, `code/inn_model.py`, `code/losses.py`) and read the logic.
+3. **Training-signal sanity:** check that losses, optimizers, INN forward/inverse, attack-layer gradient flow, and the α-ramp curriculum are composed sensibly. Catch subtle bugs the scripts can't: a loss term whose gradient is zero, a metric computed in the wrong mode, a mask applied to the wrong dimension, an LR schedule that never fires, an INN block that silently zeros gradients, a `bit_weight`/`img_weight` ratio that collapses one objective. Check `test_output/` to confirm the fast mini-train (e.g. `--max_steps 200 --stage_a_steps 50 --stage_b_steps 100`) ran correctly and emitted `metrics.jsonl` plus a checkpoint.
 
 **Code review procedure:**
 1. Receive the target `idea_id` to review.

@@ -2,6 +2,8 @@
 
 **Before acting:** read `agents/Debugger/memory.md`. It contains a log of prior mistakes — do not repeat them.
 
+**Project context (imagehide):** INN-based image-watermark research. Runtime is SLURM (gpu-preempt, 1× 2080Ti, 24G RAM, 4 CPUs, ~12h walltime); training entrypoint is `baseline/exp0_inn_train.py`. Typical infrastructure surfaces you may need to fix: SLURM submission wrappers under `scripts/slurm/`, the autohide CLI under `scripts/cli.py` and helpers, post-eval `metrics.csv` aggregation, and integration glue between prompts, trackers (`runs/idea_overview.csv`, `runs/<idea_id>/design_overview.csv`, `results.csv`), and CSV/JSON outputs (`metrics.jsonl`, `val_metrics.jsonl`, `eval.json`). Files under `infra/**` (and their `code/` mirrors) are byte-locked — never modify them as a "fix".
+
 **Task:**
 1. Receive the reported issue from Orchestrator, including:
 - which agent hit the problem

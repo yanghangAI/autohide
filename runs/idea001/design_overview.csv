@@ -1,0 +1,4 @@
+Design_ID,Design_Description,Status,created_at,updated_at
+design001,"Drop-in `ImageSecretLoss` (YUV+LPIPS+FFL) replacing pure-L1 host loss in `exp0_inn_train.py`, with default weights and the perceptual quality term gated by the existing curriculum α-ramp; bit pressure preserved via `secret_weight=20.0`.",Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+design002,"LPIPS-dominant perceptual rebalancing — `ImageSecretLoss` with `lpips_w=3.0`, shrunken `yuv_w=0.5`, `ffl_w=0.5`, gated by curriculum α-ramp; tests whether perceptual-only quality drives PSNR via residual reshaping.",Done,2026-04-26T22:16:06,2026-04-26T22:16:06
+design003,"YUV+FFL only (no LPIPS) — chroma- and frequency-reweighted host loss with `yuv_w=1.5`, `ffl_w=1.5`, `lpips_w=0.0`; gated by curriculum α-ramp. Tests whether perceptual gains come from chroma/frequency reweighting alone, with no AlexNet forward.",Done,2026-04-26T22:16:06,2026-04-26T22:16:06
